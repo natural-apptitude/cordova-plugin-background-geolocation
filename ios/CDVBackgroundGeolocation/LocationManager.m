@@ -135,6 +135,7 @@ enum {
  * configure plugin
  * @param {NSInteger} stationaryRadius
  * @param {NSInteger} distanceFilter
+ * @param {BGDistanceFilterCalculationAlgorithm} distanceFilterCalculationAlgorithm 
  * @param {NSInteger} desiredAccuracy
  * @param {BOOL} debug
  * @param {NSString*} activityType
@@ -391,7 +392,7 @@ enum {
             }
             [self stopBackgroundTask];
         }
-        return;
+        // return;
     }
 
     if ([locationQueue count] < 1) {
@@ -761,12 +762,15 @@ enum {
 - (float) calculateDistanceFilter:(float)speed
 {
     float newDistanceFilter = _config.distanceFilter;
-    if (speed < 100) {
-        // (rounded-speed-to-nearest-5) / 2)^2
-        // eg 5.2 becomes (5/2)^2
-        newDistanceFilter = pow((5.0 * floorf(fabsf(speed) / 5.0 + 0.5f)), 2) + _config.distanceFilter;
+    if(_config.distanceFilterCalculationAlgorithm == HALF_SPEED_SQUARED){
+        if (speed < 100) {
+            // (rounded-speed-to-nearest-5) / 2)^2
+            // eg 5.2 becomes (5/2)^2
+            newDistanceFilter = pow((5.0 * floorf(fabsf(speed) / 5.0 + 0.5f)), 2) + _config.distanceFilter;
+        }
+        (newDistanceFilter < 1000) ? newDistanceFilter : 1000;
     }
-    return (newDistanceFilter < 1000) ? newDistanceFilter : 1000;
+    return newDistanceFilter;
 }
 
 /**
