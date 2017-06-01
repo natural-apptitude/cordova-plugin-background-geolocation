@@ -12,33 +12,37 @@
 
 @interface Config : NSObject
 
-enum BGDistanceFilterCalculationAlgorithm {
+enum BGDistanceFilterCalculationAlgorithm
+{
     NONE = 0,
     HALF_SPEED_SQUARED = 1 //(rounded-speed-to-nearest-5) / 2)^2
-};
+}
+;
 
 typedef NSUInteger BGDistanceFilterCalculationAlgorithm;
 
 @property NSInteger stationaryRadius;
 @property NSInteger distanceFilter;
+@property BGDistanceFilterCalculationAlgorithm distanceFilterCalculationAlgorithm;
 @property NSInteger desiredAccuracy;
 @property BOOL isDebugging;
-@property NSString* activityType;
+@property NSString *activityType;
 @property BOOL stopOnTerminate;
-@property NSString* url;
-@property NSString* syncUrl;
+@property NSString *url;
+@property NSString *syncUrl;
 @property NSInteger syncThreshold;
-@property NSMutableDictionary* httpHeaders;
+@property NSMutableDictionary *httpHeaders;
 @property BOOL saveBatteryOnBackground;
 @property NSInteger maxLocations;
 @property BOOL pauseLocationUpdates;
 
-+ (instancetype) fromDictionary:(NSDictionary*)config;
-- (CLActivityType) decodeActivityType;
-- (NSInteger) decodeDesiredAccuracy;
-- (BOOL) hasUrl;
-- (BOOL) hasSyncUrl;
++ (instancetype)fromDictionary:(NSDictionary *)config;
+- (CLActivityType)decodeActivityType;
+- (NSInteger)decodeDesiredAccuracy;
+- (BOOL)hasUrl;
+- (BOOL)hasSyncUrl;
 
-@end;
+@end
+;
 
 #endif /* Config_h */
